@@ -1,0 +1,6 @@
+{
+  "name": "ARK DM",
+  "description": "Fast, private direct and group messaging web app with real-time cloud sync, replies, reactions, voice notes, shared media, and light/dark themes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

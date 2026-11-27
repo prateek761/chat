@@ -1,0 +1,475 @@
+{
+  "entities": {
+    "PublicProfile": {
+      "title": "PublicProfile",
+      "description": "Publicly discoverable ARK DM user profile without any PII.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "handle": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40,
+          "pattern": "^[a-z0-9._\\-]+$"
+        },
+        "about": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "discoverable": {
+          "type": "boolean"
+        },
+        "isOnline": {
+          "type": "boolean"
+        },
+        "lastSeen": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "handle",
+        "about",
+        "photoURL",
+        "discoverable",
+        "isOnline",
+        "lastSeen",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Private user PII and application preferences isolated from public profiles.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 254
+        },
+        "phoneNumber": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "companyId": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark"]
+        },
+        "wallpaper": {
+          "type": "string",
+          "enum": ["subtle", "solid"]
+        },
+        "enterToSend": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "email",
+        "theme",
+        "wallpaper",
+        "enterToSend",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StarredMessage": {
+      "title": "StarredMessage",
+      "description": "Private user-scoped bookmark pointing to a chat message.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "chatId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "chatName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "senderName": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "chatId",
+        "messageId",
+        "chatName",
+        "senderName",
+        "text",
+        "createdAt"
+      ]
+    },
+    "ChatRoom": {
+      "title": "ChatRoom",
+      "description": "Direct or group conversation room with bounded participant list.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["direct", "group"]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Bounded array of participant user IDs (1 to 20)."
+        },
+        "lastMessageText": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "lastMessageSenderId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "lastMessageAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "description",
+        "avatarUrl",
+        "createdBy",
+        "participantIds",
+        "lastMessageText",
+        "lastMessageSenderId",
+        "lastMessageAt",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMember": {
+      "title": "ChatMember",
+      "description": "Per-member chat state including role, pin, mute, archive, unread count, and typing state.",
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Bounded copy of chat participant IDs for secure list queries."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "member"]
+        },
+        "pinned": {
+          "type": "boolean"
+        },
+        "muted": {
+          "type": "boolean"
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "unreadCount": {
+          "type": "integer"
+        },
+        "isTyping": {
+          "type": "boolean"
+        },
+        "lastReadAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "joinedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "chatId",
+        "userId",
+        "participantIds",
+        "role",
+        "pinned",
+        "muted",
+        "archived",
+        "unreadCount",
+        "isTyping",
+        "lastReadAt",
+        "joinedAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Message inside a chat conversation.",
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "senderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "senderName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Bounded copy of chat participant IDs for secure list queries."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["text", "image", "voice"]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "mediaUrl": {
+          "type": "string",
+          "maxLength": 150000
+        },
+        "voiceDurationSec": {
+          "type": "integer"
+        },
+        "replyToId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "replyToSender": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "replyToText": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "edited": {
+          "type": "boolean"
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "readBy": {
+          "type": "array",
+          "description": "Bounded list of user IDs who have read this message (max 20)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "chatId",
+        "senderId",
+        "senderName",
+        "participantIds",
+        "type",
+        "text",
+        "mediaUrl",
+        "voiceDurationSec",
+        "replyToId",
+        "replyToSender",
+        "replyToText",
+        "edited",
+        "deleted",
+        "readBy",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "MessageReaction": {
+      "title": "MessageReaction",
+      "description": "Per-user emoji reaction to a message in a chat.",
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "participantIds": {
+          "type": "array",
+          "description": "Bounded copy of chat participant IDs for secure list queries."
+        },
+        "emoji": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "chatId",
+        "messageId",
+        "userId",
+        "participantIds",
+        "emoji",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/profiles/{userId}": {
+      "schema": { "$ref": "#/entities/PublicProfile" },
+      "description": "Public discoverable profiles (no PII)."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "Private user settings and email PII (owner-only)."
+    },
+    "/users/{userId}/starred/{starId}": {
+      "schema": { "$ref": "#/entities/StarredMessage" },
+      "description": "Private bookmarked messages owned by the user."
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/ChatRoom" },
+      "description": "Direct and group chat rooms."
+    },
+    "/chats/{chatId}/members/{memberId}": {
+      "schema": { "$ref": "#/entities/ChatMember" },
+      "description": "Per-member preferences and presence within a chat."
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Chronological messages in a chat conversation."
+    },
+    "/chats/{chatId}/reactions/{reactionId}": {
+      "schema": { "$ref": "#/entities/MessageReaction" },
+      "description": "User emoji reactions scoped to a chat."
+    }
+  }
+}
